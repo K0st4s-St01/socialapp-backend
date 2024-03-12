@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/post")
+@CrossOrigin
 public class PostController {
     private PostService service;
     private SUserService userService;
@@ -25,7 +26,7 @@ public class PostController {
     private JwtService jwtService;
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody PostDto dto){
+    public ResponseEntity<?> create(@RequestBody PostDto dto){
         Map<String, String> result = service.create(dto);
         return ResponseEntity.ok(result);
     }
@@ -47,7 +48,7 @@ public class PostController {
     public ResponseEntity<?> readById(@PathVariable("id") Long id){
         return ResponseEntity.ok(service.read(id));
     }
-    @GetMapping("pages/{size}")
+    @GetMapping("/pages/{size}")
     public ResponseEntity<?> getPages(@PathVariable("size") Integer size){
         return ResponseEntity.ok(service.pages(size));
     }

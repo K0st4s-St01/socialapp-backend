@@ -1,6 +1,7 @@
 package com.kstoi.social.config.auth;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,8 @@ import java.util.Date;
 @Component
 public class JwtService {
     private static final long EXPIRATIONTIME = 8640000;
-    private static final String PREFIX = "Bearer";
-    private static final Key key = Keys.hmacShaKeyFor("asdzxadsA!!!".getBytes(StandardCharsets.UTF_8));
+    private static final String PREFIX = "Bearer ";
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     public String getToken(String username){
         String token = Jwts.builder()

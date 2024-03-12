@@ -1,9 +1,6 @@
 package com.kstoi.social.models.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,7 +17,7 @@ public class SUser {
     private String username;
     private String password;
     private String email;
-    @Lob
+    @Column(columnDefinition = "BLOB")
     private byte[] profileImage;
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();

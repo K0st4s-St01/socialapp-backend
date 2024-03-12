@@ -12,23 +12,31 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     private SUserService service;
     private AuthenticationManager authManager;
     private JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody SUserDto dto){
-        Map<String, String> result = service.create(dto);
-        return ResponseEntity.ok(result);
+    public Map<String, String> register(@RequestBody SUserDto dto){
+        try {
+            Map<String, String> result = service.create(dto);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            return Map.of("result",e.getMessage());
+        }
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody SUserDto dto){
         Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(),dto.getPassword()));
+        if(authentication == null){
+            return ResponseEntity.ok(Map.of("result","login failed"));
+        }
         return ResponseEntity.ok(Map.of(
                 "token",jwtService.getToken(authentication.getName())
                 ,"result","ok"));
@@ -50,7 +58,7 @@ public class UserController {
     public ResponseEntity<?> readById(@PathVariable("id") String id){
         return ResponseEntity.ok(service.read(id));
     }
-    @GetMapping("pages/{size}")
+    @GetMapping("/pages/{size}")
     public ResponseEntity<?> getPages(@PathVariable("size") Integer size){
         return ResponseEntity.ok(service.pages(size));
     }

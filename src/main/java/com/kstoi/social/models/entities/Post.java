@@ -13,7 +13,7 @@ import java.util.Date;
 public class Post {
     @Id
     private Long id;
-    @Lob
+    @Column(columnDefinition = "BLOB")
     private byte[] image;
     private Date date;
     @Column(columnDefinition = "TEXT")
