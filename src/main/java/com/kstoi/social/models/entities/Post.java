@@ -12,6 +12,7 @@ import java.util.Date;
 @Builder
 public class Post {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(columnDefinition = "BLOB")
     private byte[] image;

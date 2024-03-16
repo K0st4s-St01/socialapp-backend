@@ -85,6 +85,23 @@ public class SUserService implements UserDetailsService , SService<SUser,SUserDt
         }
         return result;
     }
+    public List<SUserDto> readByNotFriends(PageRequest p,String username)
+    {
+        SUser sUser = repository.findById(username).orElseThrow();
+        sUser.getFriends().add(sUser.getUsername());
+        List<SUser> users = repository.findByUsernameNotIn(sUser.getFriends());
+        System.out.println(users);
+        var result = new ArrayList<SUserDto>();
+
+        for(SUser user : users){
+            var posts = new ArrayList<Long>();
+            for(Post post : user.getPosts()){
+                posts.add(post.getId());
+            }
+            result.add(mapper.toDto(user,posts));
+        }
+        return result;
+    }
 
     @Override
     public Map<String, String> pages(Integer size) {

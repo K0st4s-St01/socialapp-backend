@@ -58,6 +58,12 @@ public class UserController {
     public ResponseEntity<?> readById(@PathVariable("id") String id){
         return ResponseEntity.ok(service.read(id));
     }
+
+
+    @GetMapping("/not-friends/{id}/{page}/{size}")
+    public ResponseEntity<?> readByNotFriends(@PathVariable("id") String id,@PathVariable("page") Integer page,@PathVariable("size") Integer size) {
+        return ResponseEntity.ok(service.readByNotFriends(PageRequest.of(page, size), id));
+    }
     @GetMapping("/pages/{size}")
     public ResponseEntity<?> getPages(@PathVariable("size") Integer size){
         return ResponseEntity.ok(service.pages(size));
